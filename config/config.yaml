@@ -8,9 +8,16 @@ directories:
   docs: "docs/"
   pdf_figures: "docs/figures_as_pdf/"
   png_figures: "docs/figures_as_png/"
+
   data: "data/"
+  
   models: "models/"
 
 values:
   RANDOM_SEED: 42
   FEATURE_SHIFT: "mean radius"
+
+  hospital_a_export: "hospital_a.csv"
+  hospital_b_export: "hospital_b.csv"
+  test_set_export: "test_set.csv"
+
