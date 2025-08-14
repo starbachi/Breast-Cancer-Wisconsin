@@ -10,3 +10,7 @@ directories:
   png_figures: "docs/figures_as_png/"
   data: "data/"
   models: "models/"
+
+values:
+  RANDOM_SEED: 42
+  FEATURE_SHIFT: "mean radius"
