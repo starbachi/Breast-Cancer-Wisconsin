@@ -1,1 +1,68 @@
 # Breast-Cancer-Wisconsin
+
+## Objective
+
+Simulate federated learning across two “hospitals” using the Breast Cancer Wisconsin (Diagnostic) dataset without sharing raw data. Add a differential-privacy layer, compare against centralized training, and document privacy/utility trade-offs.
+
+## 1. Data Loading
+As instructed in the assignment file, dataset is loaded using ```load_breast_cancer(return_X_y=True, as_frame=True)```, which splits the feature and targets. Although it is possible to combine the splits into one pandas DataFrame, splits are kept separate to follow the instructions.
+
+### Target Names
+According to the scikit-learn documentation [here](https://scikit-learn.org/stable/datasets/toy_dataset.html#breast-cancer-dataset), class distribution of ```212 - Malignant | 357 - Benign``` indicate correct identification of target names in ```notebooks/assignment4_federated_dp.ipynb```.
+
+## 2. Basic EDA Results
+
+### Class Distribution
+Below figure indicates class imbalances in the dataset. Calculating the class weights is a possible improvement to the model's performance as it will reduce bias.
+
+![Class Balance](docs/figures_as_png/class_balance_breast_cancer.png)
+
+---
+
+### Feature Analysis
+Correlation matrix below indicates:
+- Size-related features are highly correlated:
+    - mean radius ↔ mean perimeter (1.0)
+    - mean radius ↔ mean area (0.99)
+    - mean perimeter ↔ mean area (0.99)
+    - worst radius, worst perimeter, worst area all > 0.96 with each other
+    - mean concavity ↔ mean concave points (0.92)
+    - worst concavity ↔ worst concave points (0.86)
+- Moderate Correlations
+    - mean compactness ↔ mean concavity (0.88)
+    - radius error ↔ perimeter error (0.97)
+    - area error ↔ perimeter error (0.95)
+    - fractal dimension error has moderate correlations with concavity error (0.80) and concave points error (0.73)
+- Weak or Negative Correlations
+    - mean texture weakly correlated with radius/area (~0.3)
+    - mean fractal dimension negatively correlated with size features (e.g., -0.31 with mean radius)
+    - Smoothness features generally show weak correlation with other features (<0.2 in many cases)
+
+### Possible Issue
+- Multicollinearity is very high among size features (radius, perimeter, area). Dimensionality reduction, feature selection, or regularisation could be considered.
+
+![Feature Correlation](docs/figures_as_png/correlation_heatmap_breast_cancer.png)
+
+---
+
+### Feature Statistics
+Below figures indicate:
+- Large-scale features (like ```worst area``` and ```mean area```) are present in the dataset, indicating the need for standardisation or normalisation before training.
+- Standard deviations are also relatively large, indicating high variation.
+
+![Feature Means and Standard Deviations Batch 1](docs/figures_as_png/feature_means_std_breast_cancer_batch_1.png)
+
+---
+
+### Improvements to Consider
+- Standardisation/Normalisation to scale down the large values (e.g. ```worst area```, ```mean area```)
+- Regularisation to stabilise coefficients, preferably using L2 to penalise large-scale coefficients.
+- Possibly remove near-zero or low correlation features. This requires careful consideration as low correlation features may have non-linear correlations that renders them useful. Hence, consulting a domain expert for informed decision-making is preferred.
+
+## 3. Non-IID Data Splitting Strategy and Why It Works
+- Train and test sets use stratified splitting to specifically ensure reasonable class balance in test set. However, the hospital data shards are intentionally created with class imbalance to simulate non-IID conditions.
+- Appropriate feature choice: Using "mean radius" for feature shift makes sense given it has high correlations with other features.
+- Strategy versions
+    - Former threshold strategy, ```mean + standard deviation```, created heavy class imbalance in the splits (roughly 85/15).
+    - Latter threshold strategy, ```mean + (standard deviation / 2)```, reduced the class imbalance considerably and resulted in reasonable hospital shards while maintaining Non-IID characteristics of the shards.
+- The new strategy simulates realistic hospital heterogeneity where one hospital sees more severe cases (higher mean radius).
