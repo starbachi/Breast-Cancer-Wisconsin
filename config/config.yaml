@@ -1,0 +1,12 @@
+plots:
+  eda:
+    class_balance: "class_balance_breast_cancer"
+    feature_means_std: "feature_means_std_breast_cancer"
+    correlation_heatmap: "correlation_heatmap_breast_cancer"
+
+directories:
+  docs: "docs/"
+  pdf_figures: "docs/figures_as_pdf/"
+  png_figures: "docs/figures_as_png/"
+  data: "data/"
+  models: "models/"

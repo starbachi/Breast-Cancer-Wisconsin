@@ -1,3 +1,12 @@
+# Assignment file
 assignment_file/
+
+# Virtual environment
 venv/
+
+# VS Code settings
 .vscode/
+
+# Plots and figures
+docs/figures_as_pdf/
+docs/figures_as_png/
