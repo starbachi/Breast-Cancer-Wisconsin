@@ -59,10 +59,11 @@ Below figures indicate:
 - Regularisation to stabilise coefficients, preferably using L2 to penalise large-scale coefficients.
 - Possibly remove near-zero or low correlation features. This requires careful consideration as low correlation features may have non-linear correlations that renders them useful. Hence, consulting a domain expert for informed decision-making is preferred.
 
-## 3. Non-IID Data Splitting Strategy and Why It Works
+## 3. Non-IID Data Splitting Strategy
 - Train and test sets use stratified splitting to specifically ensure reasonable class balance in test set. However, the hospital data shards are intentionally created with class imbalance to simulate non-IID conditions.
 - Appropriate feature choice: Using "mean radius" for feature shift makes sense given it has high correlations with other features.
 - Strategy versions
-    - Former threshold strategy, ```mean + standard deviation```, created heavy class imbalance in the splits (roughly 85/15).
-    - Latter threshold strategy, ```mean + (standard deviation / 2)```, reduced the class imbalance considerably and resulted in reasonable hospital shards while maintaining Non-IID characteristics of the shards.
+    - Former threshold strategy, ```mean + standard deviation```, created heavy class imbalance in the splits (~85%/~15%).
+    - Latter threshold strategy, ```mean + (standard deviation / 2)```, reduced the class imbalance considerably (~75%/~25%) and resulted in reasonable hospital shards while maintaining Non-IID characteristics of the shards.
 - The new strategy simulates realistic hospital heterogeneity where one hospital sees more severe cases (higher mean radius).
+- Data splits are checked for possible data leakage.
