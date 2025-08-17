@@ -15,7 +15,16 @@ According to the scikit-learn documentation [here](https://scikit-learn.org/stab
 ### Class Distribution
 Below figure indicates class imbalances in the dataset. Calculating the class weights is a possible improvement to the model's performance as it will reduce bias.
 
-![Class Balance](docs/figures_as_png/class_balance_breast_cancer.png)
+![Class Balance](docs/figures_as_png/1_class_balance.png)
+
+---
+
+### Feature Statistics
+Below figures indicate:
+- Large-scale features (like ```worst area``` and ```mean area```) are present in the dataset, indicating the need for standardisation or normalisation before training.
+- Standard deviations are also relatively large, indicating high variation.
+
+![Feature Means and Standard Deviations Batch 1](docs/figures_as_png/2_feature_means_and_std_batch_1.png)
 
 ---
 
@@ -41,16 +50,7 @@ Correlation matrix below indicates:
 ### Possible Issue
 - Multicollinearity is very high among size features (radius, perimeter, area). Dimensionality reduction, feature selection, or regularisation could be considered.
 
-![Feature Correlation](docs/figures_as_png/correlation_heatmap_breast_cancer.png)
-
----
-
-### Feature Statistics
-Below figures indicate:
-- Large-scale features (like ```worst area``` and ```mean area```) are present in the dataset, indicating the need for standardisation or normalisation before training.
-- Standard deviations are also relatively large, indicating high variation.
-
-![Feature Means and Standard Deviations Batch 1](docs/figures_as_png/feature_means_std_breast_cancer_batch_1.png)
+![Feature Correlation](docs/figures_as_png/3_correlation_heatmap.png)
 
 ---
 
