@@ -12,7 +12,6 @@ venv/
 
 # Plots and figures
 docs/figures_as_pdf/
-docs/figures_as_png/
 
 # Data directories
 data/
