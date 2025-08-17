@@ -10,6 +10,9 @@ directories:
   png_figures: "docs/figures_as_png/"
 
   data: "data/"
+  src: "src/"
+  notebooks: "notebooks/"
+  config: "config/"
   
   models: "models/"
 
