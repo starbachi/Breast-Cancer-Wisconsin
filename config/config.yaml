@@ -2,7 +2,7 @@ plots:
   eda:
     class_balance: "1_class_balance"
     feature_means_std: "2_feature_means_and_std"
-    correlation_heatmap: "3_correlation_heatmap"
+    correlation_heatmap: "3_feature_correlation_heatmap"
   non_iid_split:
     class_distribution_per_hospital: "4_class_distribution_per_hospital"
   centralized_model:
@@ -10,6 +10,7 @@ plots:
     centralized_lr_vs_rf_roc_curves: "6_centralized_lr_vs_rf_roc_curves"
   federated_learning:
     'federated_learning_results': "7_federated_learning_results"
+    'federated_learning_roc_auc': "8_federated_learning_roc_auc"
 
 
 directories:
