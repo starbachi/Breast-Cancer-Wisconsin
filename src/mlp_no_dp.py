@@ -73,7 +73,6 @@ class BreastCancerMLP(nn.Module):
         """Print a summary of the model architecture."""
         total_params, trainable_params = self.get_parameter_count()
         
-        print(f"BreastCancerMLP Architecture:")
         print(f" Input features: {self.input_dim}")
         print(f" Hidden Layer 1: {self.hidden1} neurons")
         print(f" Hidden Layer 2: {self.hidden2} neurons") 
@@ -130,9 +129,6 @@ def create_model(device: Optional[torch.device] = None) -> BreastCancerMLP:
     
     model = BreastCancerMLP()
     model = model.to(device)
-    
-    print(f"BreastCancerMLP created on device: {device}")
-    model.print_architecture()
     
     return model
 
