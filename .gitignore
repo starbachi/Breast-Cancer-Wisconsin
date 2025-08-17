@@ -4,6 +4,9 @@ assignment_file/
 # Virtual environment
 venv/
 
+# Cache files
+*/__pycache__/
+
 # VS Code settings
 .vscode/
 
