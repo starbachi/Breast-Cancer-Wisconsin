@@ -1,8 +1,16 @@
 plots:
   eda:
-    class_balance: "class_balance_breast_cancer"
-    feature_means_std: "feature_means_std_breast_cancer"
-    correlation_heatmap: "correlation_heatmap_breast_cancer"
+    class_balance: "1_class_balance"
+    feature_means_std: "2_feature_means_and_std"
+    correlation_heatmap: "3_correlation_heatmap"
+  non_iid_split:
+    class_distribution_per_hospital: "4_class_distribution_per_hospital"
+  centralized_model:
+    centralized_lr_vs_rf_metrics: "5_centralized_lr_vs_rf_metrics"
+    centralized_lr_vs_rf_roc_curves: "6_centralized_lr_vs_rf_roc_curves"
+  federated_learning:
+    'federated_learning_results': "7_federated_learning_results"
+
 
 directories:
   docs: "docs/"
@@ -17,10 +25,10 @@ directories:
   models: "models/"
 
 values:
-  RANDOM_SEED: 42
+  RANDOM_SEED: 1
   FEATURE_SHIFT: "mean radius"
-
+  FEDERATED_ROUNDS: 20
+  LOCAL_EPOCHS_PER_ROUND: 5
   hospital_a_export: "hospital_a.csv"
   hospital_b_export: "hospital_b.csv"
   test_set_export: "test_set.csv"
-
