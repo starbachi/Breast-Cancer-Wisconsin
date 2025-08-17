@@ -67,3 +67,68 @@ Below figures indicate:
     - Latter threshold strategy, ```mean + (standard deviation / 2)```, reduced the class imbalance considerably (~75%/~25%) and resulted in reasonable hospital shards while maintaining Non-IID characteristics of the shards.
 - The new strategy simulates realistic hospital heterogeneity where one hospital sees more severe cases (higher mean radius).
 - Data splits are checked for possible data leakage.
+
+# Federated Learning without DP
+
+## BreastCancerMLP
+
+The `BreastCancerMLP` class in `breast_cancer_mlp.py` implements a multi-layer perceptron specifically designed for breast cancer classification in federated learning environments.
+
+### Architecture
+
+```
+Input Layer (30 features) 
+    ↓
+Hidden Layer 1 (64 neurons) → ReLU → Dropout(0.3)
+    ↓  
+Hidden Layer 2 (32 neurons) → ReLU → Dropout(0.3)
+    ↓
+Output Layer (1 neuron) → BCEWithLogitsLoss
+```
+
+**Total Parameters:** 4,097
+- Layer 1: 64×30 + 64 = 1,984 parameters
+- Layer 2: 32×64 + 32 = 2,080 parameters  
+- Layer 3: 1×32 + 1 = 33 parameters
+
+### Key Features
+
+- **Federated Learning Compatible**: Parameters can be easily extracted/loaded for FL aggregation
+- **GPU Optimized**: Automatic CUDA detection and device placement
+- **Dropout Regularization**: Prevents overfitting with 30% dropout rate
+- **Binary Classification**: Single output neuron with BCEWithLogitsLoss
+- **Flower Integration**: Built-in conversion functions for Flower framework
+
+### Usage
+
+```python
+from breast_cancer_mlp import BreastCancerMLP, create_model
+
+# Create model
+model = create_model()  # Automatically detects GPU/CPU
+
+# Training
+criterion = torch.nn.BCEWithLogitsLoss()
+optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
+
+# Forward pass
+output = model(input_tensor)  # Shape: [batch_size, 1]
+loss = criterion(output, targets)
+```
+
+### Federated Learning Functions
+
+- `get_model_parameters(model)`: Extract numpy arrays for FL aggregation
+- `set_model_parameters(model, params)`: Load parameters from FL server
+- `model_to_flower_parameters(model)`: Convert to Flower Parameters format
+- `flower_parameters_to_model(model, params)`: Load from Flower Parameters
+
+### Why This Architecture?
+
+1. **Small but effective**: 4K parameters prevent overfitting on 455 samples
+2. **Two hidden layers**: Sufficient capacity for breast cancer feature relationships
+3. **Moderate dropout**: 30% rate balances regularization vs. learning capacity
+4. **ReLU activation**: Fast, stable gradients for federated training
+5. **GPU-friendly**: Optimized for CUDA acceleration when available
+
+This model serves as the foundation for both Hospital A and Hospital B clients in the federated learning simulation without DP functionalities.
