@@ -14,7 +14,7 @@ from flwr.common import NDArrays, Scalar
 from flwr.client import NumPyClient
 from flndp_model import BreastCancerMLP
 
-class HospitalClient(NumPyClient):
+class FLClient(NumPyClient):
     def __init__(self, client_id: str, X_train: np.ndarray, y_train: np.ndarray, device: str = "cpu", RANDOM_SEED: int = 1):
         """Initialise the client with training data and model.
         Args:
