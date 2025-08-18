@@ -43,9 +43,6 @@ class HospitalClient(NumPyClient):
         self.X_train = torch.FloatTensor(X_train).to(self.device)
         self.y_train = torch.FloatTensor(y_train).unsqueeze(1).to(self.device)
         # ---------------------------------------------------------------------------- #
-
-        # Initialise model
-        self.model = BreastCancerMLP(input_dim=self.X_train.shape[1]).to(device)
         
         # Print simple data statistics
         malignant_count = int((y_train == 0).sum())
@@ -61,17 +58,26 @@ class HospitalClient(NumPyClient):
             raise
     
     def set_parameters(self, parameters: NDArrays) -> None:
-        """Set client's model parameters from server-sent numpy arrays"""
-        try:
-            params_dict = zip(self.model.state_dict().keys(), parameters)
-            state_dict = OrderedDict(
-                {k: torch.tensor(v, device=self.device) for k, v in params_dict}
-            )
-            self.model.load_state_dict(state_dict, strict=True)
-        except Exception as e:
-            print(f"Error setting parameters for {self.client_id}: {str(e)}")
-            raise
+        if not hasattr(self, "model"):
+            # Lazy init: infer architecture from server parameter shapes
+            arch_config = {"input_dim": parameters[0].shape[0], "hidden_dims": [10, 5]}
+            self.model = BreastCancerMLP(arch_config=arch_config).to(self.device)
+        
+        params_dict = zip(self.model.state_dict().keys(), parameters)
+        state_dict = OrderedDict({k: torch.tensor(v, device=self.device) for k, v in params_dict})
+        self.model.load_state_dict(state_dict, strict=True)
     
+    def _create_local_model(self, arch_config: dict) -> nn.Module:
+        """Create a local model instance based on the architecture configuration."""
+        try:
+            model = BreastCancerMLP(arch_config=arch_config)
+            model.to(self.device)
+            print(f"Local model created for client {self.client_id} with architecture: {arch_config}")
+            return model
+        except Exception as e:
+            print(f"Error creating local model for {self.client_id}: {str(e)}")
+            raise
+
     def fit(self, parameters: NDArrays, config: Dict[str, Scalar]) -> Tuple[NDArrays, int, Dict[str, Scalar]]:
         """Train the model on local data and return updated parameters, number of samples, and metrics.
         Args:
