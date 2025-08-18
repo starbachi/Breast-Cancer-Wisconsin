@@ -11,3 +11,4 @@ jupyter==1.1.1
 notebook==7.4.5
 ipykernel==6.30.1
 pyyaml==6.0.2
+flwr[simulation]>=1.20.0
