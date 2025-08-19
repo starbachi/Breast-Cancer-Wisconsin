@@ -1,0 +1,41 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "lunartech"
+version = "1.0.0"
+description = ""
+license = "Apache-2.0"
+
+[tool.hatch.build.targets.wheel]
+packages = ["."]
+
+[tool.flwr.app]
+publisher = "Erdem Elik"
+
+[tool.flwr.app.components]
+serverapp = "lunartech.server_app:app"
+clientapp = "lunartech.client_app:app"
+
+# Custom config values accessible via `context.run_config`
+[tool.flwr.app.config]
+num-server-rounds = 20
+fraction-fit = 1.0
+fraction-evaluate =  1.0
+min-available-clients = 2
+local-epochs = 5
+
+# Default federation to use when running the app
+[tool.flwr.federations]
+default = "local-simulation"
+
+# Local simulation federation with 2 virtual SuperNodes
+[tool.flwr.federations.local-simulation]
+options.num-supernodes = 2
+
+# Remote federation example for use with SuperLink
+[tool.flwr.federations.remote-federation]
+address = "<SUPERLINK-ADDRESS>:<PORT>"
+insecure = true  # Remove this line to enable TLS
+# root-certificates = "<PATH/TO/ca.crt>"  # For TLS setup
