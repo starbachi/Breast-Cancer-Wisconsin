@@ -40,8 +40,8 @@ class FLClient(NumPyClient):
         self.y_train = y_train.to_numpy() if isinstance(y_train, (pd.DataFrame, pd.Series)) else np.array(y_train)
         
         # Ensure training data is 2D
-        self.X_train = torch.FloatTensor(X_train).to(self.device)
-        self.y_train = torch.FloatTensor(y_train).unsqueeze(1).to(self.device)
+        self.X_train = torch.FloatTensor(self.X_train).to(self.device)
+        self.y_train = torch.FloatTensor(self.y_train).unsqueeze(1).to(self.device)
         # ---------------------------------------------------------------------------- #
         
         # Print simple data statistics

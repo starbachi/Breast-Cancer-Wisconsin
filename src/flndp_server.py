@@ -120,7 +120,7 @@ class FLServer:
     # ------------------ THREAD BLOCKING EXECUTION OF THE SERVER ----------------- #
     def _start(self):
         """Start the Flower server asynchronously."""
-        self._server_thread = threading.Thread(target=self._run_server, daemon=True)
+        self._server_thread = threading.Thread(target=self._run_server)
         self._server_thread.start()
         time.sleep(1)
         print("Server is running in the background" if self._server_thread.is_alive() else "Server failed to start")

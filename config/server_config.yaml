@@ -22,8 +22,8 @@ model:
       out_features: 1
 
 strategy:
-  fraction_fit: 0.5
-  fraction_evaluate: 0.5
+  fraction_fit: 1.0
+  fraction_evaluate: 1.0
   min_fit_clients: 2
   min_evaluate_clients: 2
   min_available_clients: 2
